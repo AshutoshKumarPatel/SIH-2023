@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel='stylesheet' href="{% static 'css/index.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+    .wrapper .images .img-1 {
+        background-image: url({% static 'images/dehaze_image.jpg' %});
+        background-repeat: no-repeat;
+    }
+
+    .wrapper .images .img-2 {
+        background-image: url({% static 'images/haze_image.jpg' %});
+        background-repeat: no-repeat;
+    }
+</style>
+{% endblock head %}
+
+{% block title %} HazeBusters {% endblock title %}
+
+{% block body %}
+<div class="hero-section">
+    <div class="wrapper">
+        <div class="images">
+            <div class="img-1"></div>
+            <div class="img-2"></div>
+        </div>
+        <div class="slider">
+            <div class="drag-line">
+                <span></span>
+            </div>
+            <input type="range" min="0" max="100" value="50">
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <form action="{% url 'index' %}" method="POST" enctype="multipart/form-data" required>
+        {% csrf_token %}
+        <div class="btn upload">
+
+            <input type="file" name="video_file" id="video_file" accept="video/*" required> Upload
+            <lord-icon src="https://cdn.lordicon.com/wfadduyp.json" trigger="hover" colors="primary:#121331"
+                style="width:50px;height:40px"></lord-icon>
+        </div>
+        <div class="btn upload submit-button" type="">
+            <input type="submit" class="submit-button" value="submit"> Submit
+        </div>
+    </form>
+    <div class="btn realtime">Real Time</div>
+</div>
+
+<script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+<script>
+    const slider = document.querySelector(".slider input");
+    const img = document.querySelector(".images .img-2");
+    const dragLine = document.querySelector(".slider .drag-line");
+    slider.oninput = () => {
+        let sliderVal = slider.value;
+
+        if (sliderVal >= 1.5 && sliderVal <= 98.5)  {
+            dragLine.style.left = sliderVal + "%";
+            img.style.width = sliderVal + "%";
+        }
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#video_file').on('change', function(){
+        if ($(this).val() != '') {  // If a file was selected
+            $('.submit-button').show();  // Show the submit button
+        } else {
+            $('.submit-button').hide();  // Hide the submit button
+        }
+    });
+});
+</script>
+{% endblock body %}

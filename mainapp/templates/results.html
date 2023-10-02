@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel='stylesheet' href="{% static 'css/index.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+    .video-container {
+        display: flex;
+        justify-content: center;
+        gap: 5rem;
+        max-width: 100%;
+        overflow: hidden;
+        margin-top: 2rem;
+    }
+
+    video {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+{% endblock head %}
+
+{% block title %} HazeBusters {% endblock title %}
+
+
+{% block body %}
+
+<div class="video-container">
+    <video id="video1" controls>
+        <source src="{{ input_file_path }}" type="video/mp4">
+    </video>
+    <video id="video2" controls>
+        <source src="{{ output_file_path }}" type="video/mp4">
+    </video>
+</div>
+
+<script>
+    const video1 = document.getElementById('video1');
+    const video2 = document.getElementById('video2');
+
+    // Add event listener to synchronize video playback
+    video1.addEventListener('play', () => {
+        video2.play();
+    });
+
+    video1.addEventListener('pause', () => {
+        video2.pause();
+    });
+
+    video2.addEventListener('play', () => {
+        video1.play();
+    });
+
+    video2.addEventListener('pause', () => {
+        video1.pause();
+    });
+</script>
+{% endblock body %}
