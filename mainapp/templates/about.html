@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel='stylesheet' href="{% static 'css/about.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
+{% endblock head %}
+
+{% block title %} HazeBusters {% endblock title %}
+
+{% block body %}
+<div class="about-wrapper">
+    <div class="left">
+        <img src="{% static 'images/about.png' %}" alt="">
+    </div>
+    <div class="about">
+        <h2>Introduction</h2>
+        <p>
+            Welcome to HazeBusters Tech, where innovation meets clarity. We're a dedicated team harnessing AI and machine
+            learning to tackle visibility challenges caused by haze and smoke. Our journey started with a vision – to
+            bring clarity to the world's most challenging visual environments.
+        </p>
+
+        <h2>Our Mission</h2>
+        <p>
+            At HazeBusters, our mission is to lead in AI-ML-based de-hazing and de-smoking solutions. We're committed to
+            enhancing real-time visibility for safety, reliability, and quality in various applications. Our core values
+            include innovation, safety, quality, collaboration, and environmental responsibility.
+        </p>
+        
+        <h2>Our Team</h2>
+        <p>Meet our talented HazeBusters Tech team:
+
+            <span>Rajul Mahto</span> leads as Team Leader with expertise in Deep Learning Model Implementation, while <span>Aryan Das</span>, <span>Nayasha Rathi</span>, and <span>Rajul Mahto</span> contribute to this domain. <span> Ashutosh Patel </span> manages Backend Development, and <span>Samriddhi Shukla</span> and <span>Shreyas Patondikar</span> focus on creating user-friendly interfaces. Together, this diverse team combines their expertise to make our vision of a clearer and safer world through innovation a reality.
+        </p>
+    </div>
+</div>
+{% endblock body %}

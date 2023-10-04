@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.about-wrapper {
+    display: flex;
+    gap: 2rem;
+    padding: 4rem 2rem;
+}
+
+.about {
+    background-color: white;
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    height: 75vh;
+    overflow-y: auto;
+}
+
+span {
+    font-weight: 900;
+}
+
+h2, p {
+    font-family: Poppins;
+}
+
+h2 {
+    font-size: calc(8px + 1.5vw);
+    margin-bottom: 0.5rem;
+    color: #000050;
+}
+
+p {
+    font-size: calc(8px + 0.75vw);
+    margin-bottom: 2rem;
+}
