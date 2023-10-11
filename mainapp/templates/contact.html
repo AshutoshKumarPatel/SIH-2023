@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel='stylesheet' href="{% static 'css/contact.css' %}">
+
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+{% endblock head %}
+
+{% block title %} HazeBusters {% endblock title %}
+
+{% block body %}
+<div class="contact-wrapper">
+  <div class="contact-container">
+    <form action="https://formspree.io/f/mqkvwayj" method="POST" class="contact-form">
+      {% csrf_token %}
+      <div class="form-head">
+        <h2>Get in Touch</h2>
+        <h4>We are here for you! How can we help?</h4>
+      </div>
+      <div class="fields">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email">
+        <label for="message">Message</label>
+        <textarea href="" name="msg" id="msg" cols="30" rows="5"></textarea>
+      </div>
+      <input type="hidden" name="_next" value="{% url 'index' %}" />
+      <input type="submit" name="Submit" id="submit" value="Submit">
+    </form>
+    <div class="contact-desc">
+      <img src="{% static 'images/contact us.png' %}" alt="">
+      <div class="contact-details">
+        <div class="detail">
+          <iconify-icon icon="carbon:location"></iconify-icon>
+          <span class="detail">VIT Bhopal University</span>
+        </div>
+        
+        <div class="detail">
+          <iconify-icon icon="mi:call"></iconify-icon>
+          <span class="detail">+91 9340896912</span>
+        </div>
+        <div class="detail">
+          <iconify-icon icon="fluent:mail-24-regular"></iconify-icon>
+          <span class="detail">Rajul.Mahto2021@vitbhopal.ac.in</span>
+        </div>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="" class="social">
+        <iconify-icon icon="bxl:facebook"></iconify-icon>
+      </a>
+      <a href="" class="social">
+        <iconify-icon icon="mdi:instagram"></iconify-icon>
+      </a>
+      <a href="" class="social">
+        <iconify-icon icon="akar-icons:linkedin-fill"></iconify-icon>
+      </a>
+      <a href="" class="social">
+        <iconify-icon icon="ri:twitter-x-line"></iconify-icon>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock body %}
