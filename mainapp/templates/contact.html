@@ -13,7 +13,7 @@
 {% block body %}
 <div class="contact-wrapper">
   <div class="contact-container">
-    <form action="https://formspree.io/f/mqkvwayj" method="POST" class="contact-form">
+    <form action="" method="POST" class="contact-form">
       {% csrf_token %}
       <div class="form-head">
         <h2>Get in Touch</h2>
@@ -21,13 +21,12 @@
       </div>
       <div class="fields">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" required >
         <label for="email">Email</label>
-        <input type="email" name="email" id="email">
+        <input type="email" name="email" id="email" required>
         <label for="message">Message</label>
-        <textarea href="" name="msg" id="msg" cols="30" rows="5"></textarea>
+        <textarea href="" name="msg" id="msg" cols="30" rows="5" required></textarea>
       </div>
-      <input type="hidden" name="_next" value="{% url 'index' %}" />
       <input type="submit" name="Submit" id="submit" value="Submit">
     </form>
     <div class="contact-desc">
