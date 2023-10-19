@@ -12,12 +12,6 @@
     <title>
         {% block title %} {% endblock title %}
     </title>
-
-    <style>
-        body {
-            background-image: url({% static 'images/bg.png' %});
-        }
-    </style>
 </head>
 <body>
     <div class="header">
@@ -28,8 +22,8 @@
             <div class="title">Haze Busters</div>
         </div>
         <div class="right">
-            <div class="btn"><a href="{% url 'about' %}">About US</a></div>
-            <div class="btn"><a href="{% url 'contact' %}">Contact US</a></div>
+            <div><a href="{% url 'about' %}">About</a></div>
+            <div><a href="{% url 'contact' %}">Contact</a></div>
         </div>
     </div>
     {% block body %} {% endblock body %}

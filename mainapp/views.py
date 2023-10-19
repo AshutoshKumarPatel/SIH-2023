@@ -1,6 +1,10 @@
 import os
 import json
+import pytz
 
+from datetime import datetime
+from . mail import mail
+from . models import *
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -17,24 +21,16 @@ def index(request):
             input_file = default_storage.save(video_file.name, video_file)
             output_file = f"dehaze_{input_file}"
 
-            print(settings.MEDIA_URL)
-            print(settings.MEDIA_ROOT)
-            print(input_file)
-            print(output_file)
             input_file_path = os.path.join(settings.MEDIA_URL, input_file)
             output_file_path = os.path.join(settings.MEDIA_URL, output_file)
             input_file = os.path.join(settings.MEDIA_ROOT, input_file)
             output_file = os.path.join(settings.MEDIA_ROOT, output_file)
 
-            print(input_file_path)
-            print(output_file_path)
-
             dehazer = Dehaze()
             dehazer.process_video(input_file, output_file)
 
             file_paths = {'input_file_path': input_file_path, 'output_file_path': output_file_path}
-            print(file_paths)
-            # return redirect('/results', file_paths=file_paths)
+
             file_paths_query_param = urlencode({'file_paths': json.dumps(file_paths)})
             url = reverse('results') + '?' + file_paths_query_param
             return redirect(url)
@@ -43,23 +39,34 @@ def index(request):
 
 def results(request):
     if request.method == "GET":
-        # file_paths = request.GET.get('file_paths', None)
-        # print(file_paths)
 
         file_paths_param = request.GET.get('file_paths', None)
 
         if file_paths_param is not None:
-            # Deserialize the JSON data from the query parameter into a dictionary
             file_paths = json.loads(file_paths_param)
-        # if file_paths is not None:
             input_file_path = file_paths.get('input_file_path', '')
             output_file_path = file_paths.get('output_file_path', '')
             return render(request, 'results.html', {'input_file_path': input_file_path, 'output_file_path': output_file_path})
         else:
-            # Handle the case where file_paths is None
             return HttpResponse("File paths not found or invalid.")  
         
 def contact(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        email = request.POST['email']
+        message = request.POST['msg']
+        time = datetime.now(pytz.utc)
+
+        SupportTicket.objects.create(name=name, email=email, message=message)
+        Support_ID = SupportTicket.objects.get(name=name, email=email, message=message, created_at = time)
+        print(Support_ID)
+        print(Support_ID.ticket_no)
+        support_mail = mail()
+        support_mail.send_mail(name, email, message, Support_ID.ticket_no)
+        
+        print(name, email, message)
+        return render(request, 'contact.html')
+
     return render(request, 'contact.html')
 
 def about(request):
