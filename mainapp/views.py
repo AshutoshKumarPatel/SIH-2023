@@ -9,14 +9,21 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.files.storage import default_storage
-from dehaze import Dehaze
+from dehaze import LWAED
 from urllib.parse import urlencode
 from django.urls import reverse
 
 # Create your views here.
 def index(request):
+    return render(request, 'index.html')
+
+def dehaze(request):
+    return render(request, 'dehaze.html')
+
+def upload(request):
     if request.method == "POST":
         video_file = request.FILES['video_file']
+        print(video_file)
         if video_file:
             input_file = default_storage.save(video_file.name, video_file)
             output_file = f"dehaze_{input_file}"
@@ -26,7 +33,7 @@ def index(request):
             input_file = os.path.join(settings.MEDIA_ROOT, input_file)
             output_file = os.path.join(settings.MEDIA_ROOT, output_file)
 
-            dehazer = Dehaze()
+            dehazer = LWAED()
             dehazer.process_video(input_file, output_file)
 
             file_paths = {'input_file_path': input_file_path, 'output_file_path': output_file_path}
@@ -34,8 +41,7 @@ def index(request):
             file_paths_query_param = urlencode({'file_paths': json.dumps(file_paths)})
             url = reverse('results') + '?' + file_paths_query_param
             return redirect(url)
-
-    return render(request, 'index.html')
+    return render(request, 'upload.html')
 
 def results(request):
     if request.method == "GET":

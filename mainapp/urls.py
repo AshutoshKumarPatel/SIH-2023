@@ -6,4 +6,6 @@ urlpatterns = [
     path('contact', views.contact , name='contact'),
     path('about', views.about , name='about'),
     path('results', views.results , name='results'),
+    path('dehaze', views.dehaze , name='dehaze'),
+    path('upload', views.upload , name='upload'),
 ]
