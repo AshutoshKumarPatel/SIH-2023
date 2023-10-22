@@ -1,0 +1,38 @@
+.hero-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    justify-content: center;
+    padding: 5rem 0;
+    gap: 5rem;
+}
+
+.dehaze-hero {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-family: Poppins;
+    justify-content: center;
+    padding: 2rem;
+    width: 60%;
+}
+
+.dehaze-hero .title {
+    font-size: calc(8px + 2.5vw);
+}
+
+.dehaze-hero .sub-description {
+    color: #4b4b4b;
+    font-size: calc(8px + 0.75vw);
+    text-align: center;
+}
+
+.options {
+    display: flex;
+    gap: 7rem;
+}
+
+a {
+    font-size: calc(8px + 1vw) !important;
+}

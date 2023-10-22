@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel='stylesheet' href="{% static 'css/index.css' %}">
+<link rel='stylesheet' href="{% static 'css/dehaze.css' %}">
+{% endblock head %}
+
+{% block title %} HazeBusters - Dehaze{% endblock title %}
+
+{% block body %}
+    <div class="hero-wrapper">
+        <div class="dehaze-hero">
+            <span class="title">Video Dehazing Made Easy</span>
+            <span class="sub-description">
+                Haze is a common problem that affects the quality and visibility of videos, especially in outdoor scenes. Haze reduces the contrast and color saturation of the videos, making them look dull and blurry. Video Dehazing Made Easy uses a novel algorithm that combines multiscale guided filtering and temporal alignment to dehaze your videos.
+            </span>
+        </div>
+
+        <div class="options">
+            <a href="{% url 'upload' %}" class="btn">Upload</a>
+            <a href="{% url 'about' %}" class="btn">Realtime</a>
+        </div>
+    </div>
+{% endblock body %}

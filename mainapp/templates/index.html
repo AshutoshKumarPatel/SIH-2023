@@ -23,9 +23,9 @@
             Advanced technology for Crystal Clear Results
         </span>
         <br><br><br><br>
-        <div class="btn">
+        <a href="{% url 'dehaze' %}" class="btn">
             Get Started
-        </div>
+        </a>
     </div>
     <div>
         <img-comparison-slider>
@@ -48,7 +48,7 @@
 <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
-<script>
+<!-- <script>
 $(document).ready(function(){
     $('#video_file').on('change', function(){
         if ($(this).val() != '') {  // If a file was selected
@@ -58,5 +58,5 @@ $(document).ready(function(){
         }
     });
 });
-</script>
+</script> -->
 {% endblock body %}

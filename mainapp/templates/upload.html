@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel='stylesheet' href="{% static 'css/upload.css' %}">
+{% endblock head %}
+
+{% block title %} HazeBusters - Upload{% endblock title %}
+
+{% block body %}
+<div class="upload-wrapper">
+    <form action="{% url 'upload' %}" class="upload-container" method="POST" enctype="multipart/form-data" required>
+    {% csrf_token %}
+        <div id="dropZone" class="upload">
+            <div id="emptyState" class="empty-state">
+                <img src="{% static 'images/upload.png' %}" alt="">
+                <strong>Drag file(s) here to upload</strong>
+                <span>
+                    Alternatively you can select files by
+                    <br>
+                    <label for="video_file" class="btn-upload">clicking here.</label>
+                </span>
+                <input type="file" name="video_file" id="video_file" accept="video/*" required>
+            </div>
+            <div id="filledState" class="filled-state">
+                <script src="https://cdn.lordicon.com/lordicon-1.1.0.js"></script>
+                <lord-icon src="https://cdn.lordicon.com/uwtqzoif.json" trigger="in" delay="1500" state="in-videocam" style="width:100px;height:100px"></lord-icon>
+                <span id="file-name"></span>
+            </div>
+        </div>
+        <div class="upload-footer">
+            <button class="btn cancel" type="reset">Cancel</button>
+            <button class="btn" type="submit">Submit</button>
+        </div>
+    </form>
+    <span class="divider"></span>
+    <div class="sample-videos"> 
+        <div class="video">
+            <a href=""><img src="https://source.unsplash.com/random/256x256"></a>
+        </div>
+        <div class="video">
+            <a href=""><img src="https://source.unsplash.com/random/256x256"></a>
+        </div>
+        <div class="video">
+            <a href=""><img src="https://source.unsplash.com/random/256x256"></a>
+        </div>
+        <div class="video">
+            <a href=""><img src="https://source.unsplash.com/random/256x256"></a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        var dropZone = document.getElementById("dropZone");
+        var fileInput = document.getElementById("video_file"); // Corrected the ID
+
+        // Add event listeners for drag and drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        // Add an event listener for file selection via the input element
+        fileInput.addEventListener('change', handleFileInput, false);
+
+        function handleDrop(e) {
+            var dt = e.dataTransfer;
+            var files = dt.files;
+
+            handleFiles(files);
+            toggleUploadState();
+        }
+
+        // Function to handle file selection via the input element
+        function handleFileInput(e) {
+            var files = e.target.files;
+
+            handleFiles(files);
+            toggleUploadState();
+        }
+
+        function handleFiles(files) {
+            ([...files]).forEach(uploadFile);
+        }
+
+        function toggleUploadState() {
+            document.getElementById("emptyState").style.display = "none";
+            document.getElementById("filledState").style.display = "flex";
+        }
+
+        function uploadFile(file) {
+            document.getElementById("file-name").innerHTML = file.name;
+        }
+    }
+</script>
+
+
+
+{% endblock body %}
