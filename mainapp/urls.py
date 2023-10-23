@@ -8,4 +8,5 @@ urlpatterns = [
     path('results', views.results , name='results'),
     path('dehaze', views.dehaze , name='dehaze'),
     path('upload', views.upload , name='upload'),
+    path('realtime', views.realtime , name='realtime'),
 ]
