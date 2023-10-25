@@ -7,17 +7,15 @@
 
 <style>
     .video-container {
-        display: flex;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 5rem;
-        max-width: 100%;
-        overflow: hidden;
-        margin-top: 2rem;
+        margin-top: 4rem;
+        padding: 1rem;
     }
 
     video {
-        max-width: 100%;
-        height: auto;
+        width: 100%;
     }
 </style>
 {% endblock head %}

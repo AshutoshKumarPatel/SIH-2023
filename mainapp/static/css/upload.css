@@ -28,7 +28,7 @@
     align-items: center;
 }
 
-#video_file {
+#video_file, #sample_video {
     display: none;
 }
 
@@ -73,6 +73,7 @@
     color: white;
     padding: 0.5rem 1.25rem;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .upload-footer .cancel {
@@ -106,4 +107,8 @@
     border-radius: 1rem;
     background-color: #ffffff;
     overflow: hidden;
+}
+
+.img-submit {
+    cursor: pointer;
 }

@@ -2,16 +2,21 @@ import os
 import json
 import pytz
 
-from datetime import datetime
 from . mail import mail
 from . models import *
+from datetime import datetime
 from django.conf import settings
+from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.core.files.storage import default_storage
-from dehaze import LWAED
-from urllib.parse import urlencode
 from django.urls import reverse
+from urllib.parse import urlencode
+from dehaze import LWAED
+
+# SAMPLE_FILES_PATH = [os.path.join(os.getcwd(), 'sample_videos', file) for file in os.listdir('sample_videos') if os.path.isfile(os.path.join('sample_videos', file))]
+SAMPLE_FILES_PATH = os.listdir(os.path.join(settings.STATIC_ROOT, 'sample_videos'))
+# dehazer = LWAED()
+
 
 # Create your views here.
 def index(request):
@@ -22,6 +27,7 @@ def dehaze(request):
 
 def upload(request):
     if request.method == "POST":
+        # print(request)
         video_file = request.FILES['video_file']
         print(video_file)
         if video_file:
@@ -41,7 +47,31 @@ def upload(request):
             file_paths_query_param = urlencode({'file_paths': json.dumps(file_paths)})
             url = reverse('results') + '?' + file_paths_query_param
             return redirect(url)
-    return render(request, 'upload.html')
+        
+    return render(request, 'upload.html', {'file_paths': SAMPLE_FILES_PATH})
+
+def upload_sample(request):
+    if request.method == 'POST':
+        video_file = request.POST['video_file']
+        if video_file:
+            output_file = f"dehaze_{video_file}"
+
+            input_file_path = os.path.join(settings.STATIC_URL, 'sample_videos', video_file)
+            output_file_path = os.path.join(settings.MEDIA_URL, output_file)
+            input_file = os.path.join(settings.STATIC_ROOT, 'sample_videos', video_file)
+            output_file = os.path.join(settings.MEDIA_ROOT, output_file)
+
+            dehazer = LWAED()
+            dehazer.process_video(input_file, output_file)
+
+            file_paths = {'input_file_path': input_file_path, 'output_file_path': output_file_path}
+
+            file_paths_query_param = urlencode({'file_paths': json.dumps(file_paths)})
+            url = reverse('results') + '?' + file_paths_query_param
+            return redirect(url)
+        
+    # return render(request, 'upload.html', {'file_paths': SAMPLE_FILES_PATH})
+
 
 def results(request):
     if request.method == "GET":
