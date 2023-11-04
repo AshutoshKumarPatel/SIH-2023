@@ -1,5 +1,9 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .hero-section {
-    margin-top: 4rem;
+    height: 80vh;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -85,4 +89,168 @@ lord-icon {
     width: 50px;
     height: 40px;
     filter: brightness(0) invert(1);
+}
+
+.stats-wrapper {
+    
+    padding: 0 5rem;
+}
+
+.stats-title {
+    font-size: calc(8px + 2.5vw);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 5rem;
+}
+
+.stats-container a,
+.stats-container .stats-card {
+    height: 100%;
+}
+
+.stats-card {
+    /* background: linear-gradient(120deg, rgb(12 11 14) 0%, #333333 100%); */
+    /* background-color: #181818; */
+    border-radius: 0.75rem;
+    /* color: white; */
+    /* color: black; */
+    padding: 1rem;
+    /* box-shadow: 0px 0px 10px #757575; */
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.source-detail {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.stats-title,
+.source-name,
+.text-window {
+    font-family: Poppins;
+}
+
+.source-name {
+    font-size: calc(8px + 1vw);
+    font-weight: 500;
+}
+
+.text-window {
+    margin-left: 4rem;
+    font-size: calc(8px + 0.5vw);
+}
+
+.source-logo {
+    display: flex;
+    align-items: center;
+}
+
+.source-logo img {
+    border-radius: 100rem;
+    aspect-ratio: 1;
+    width: 3rem;
+    overflow: hidden;
+    object-fit: contain;
+}
+
+.gap {
+    height: 10rem;
+    display: grid;
+    place-items: center;
+}
+
+#scroll {
+    display: inline-block;
+    width: 10px;
+    height: 30px;
+    background: rgb(59, 59, 59);
+    border-radius: 5px;
+    animation: move 2s infinite cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+#scroll:nth-of-type(1) {
+    transform: rotate(-45deg);
+}
+
+#scroll:nth-of-type(2) {
+    transform: rotate(45deg);
+}
+
+@keyframes move {
+    0% {
+        margin-top: 0;
+    }
+
+    50% {
+        margin-top: 100px;
+    }
+
+    100% {
+        margin-top: 0;
+    }
+}
+
+.faq-wrapper {
+    padding: 0px 5rem;
+    display: grid;
+    place-items: center;
+}
+
+.faq-title {
+    font-family: Poppins;
+    font-size: clamp(2.25rem, 2.5vw, 2.5rem);
+    margin-bottom: 2rem;
+}
+
+.faq-container {
+    display: grid;
+    gap: 1rem;
+}
+
+.query {
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    padding: 1rem;
+    font-family: Poppins;
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
+}
+
+.query h3 {
+    position: relative;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2vw, 1.75rem);
+}
+
+.query h3::before {
+    font-size: clamp(2rem, 2vw, 2.15rem);
+    position: absolute;
+    top: 50%;
+    right: 1%;
+    content: '+';
+    cursor: pointer;
+    translate: 0% -50%;
+}
+
+.response {
+    padding-top: 0rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease-out;
+}
+
+.query.active h3::before {
+    content: '-';
+}
+
+.query.active .response {
+    padding-top: 1rem;
+    max-height: 10rem;
+    transition: all 0.5s ease-in;
 }

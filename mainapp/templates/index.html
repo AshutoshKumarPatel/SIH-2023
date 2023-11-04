@@ -45,18 +45,119 @@
     </div>
 </div>
 
+<div class="gap">
+    <a href="#status">
+        <span id="scroll"></span>
+        <span id="scroll"></span>
+    </a>
+</div>
+
+<div class="stats-wrapper" id="status">
+    <div class="stats-title">
+        From Flames to Facts!
+    </div>
+    <div class="stats-container">
+        <a href="https://www.linkedin.com/pulse/post-01-analysis-fire-incidents-statistics-india-fp-dessin/">
+            <div class="stats-card">
+                <div class="source-detail">
+                    <div class="source-logo">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/LinkedIn_icon_circle.svg/800px-LinkedIn_icon_circle.svg.png" alt="">
+                    </div>
+                    <div class="source-name"> LinkedIn
+                    </div>
+                </div>
+                <div class="source-data">
+                    <div class="text-window">
+                        As per the National Crime Records Bureau, about over 60 people die every day in India due to fire. Every year, about 25,000 persons die due to fires and related causes, in India. Women account for about 66% of those killed in fire accidents. Fire accounts for about 6% of the total deaths reported due to natural and unnatural causes.
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="https://raleighnc.gov/safety/services/keeping-score-key-fire-statistics-q2-2023">
+            <div class="stats-card">
+                <div class="source-detail">
+                    <div class="source-logo">
+                        <img src="https://www.governmentjobs.com/AgencyPages/raleighnc/agencyImages/download/Raleigh.png" alt="">
+                    </div>
+                    <div class="source-name"> Raleigh
+                    </div>
+                </div>
+                <div class="source-data">
+                    <div class="text-window">
+                        In the second quarter of 2023, the number of all fires increased by 22 percent, from 254 to 312. Financial losses that resulted from fires decreased slightly from $4.1 million to $4 million.
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="https://raleighnc.gov/safety/services/keeping-score-key-fire-statistics-q2-2023">
+            <div class="stats-card">
+                <div class="source-detail">
+                    <div class="source-logo">
+                        <img src="https://yt3.googleusercontent.com/ytc/APkrFKZb6HmtWtiPnCYEEmkQJ77DZ6pr1IBDg6gh8ZVfBQ=s900-c-k-c0x00ffffff-no-rj" alt="">
+                    </div>
+                    <div class="source-name"> National Safety Council
+                    </div>
+                </div>
+                <div class="source-data">
+                    <div class="text-window">
+                        In 2021, 1,353,500 fires resulted in 3,800 civilian deaths and 14,700 injuries. The 2021 civilian fire death toll of 3,800 is 8.6% higher than the 3,500 total in 2020.
+
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="gap"></div>
+
+<div class="faq-wrapper">
+    <div class="faq-title">Frequently Asked Questions</div>
+    <div class="faq-container">
+        <div class="query">
+            <h3> What is the main objective of your video enhancement technology?
+            </h3>
+            <div class="response">The primary goal of our video enhancement technology is to significantly improve the visual quality of videos. By reducing imperfections such as haze, noise, and blurriness, we aim to provide users with crystal clear and visually appealing video content.</div>
+        </div>
+        <div class="query">
+            <h3>Can your technology enhance any type of video, regardless of its source or quality?</h3>
+            <div class="response">Our technology is designed to enhance a wide range of video content. However, the extent of improvement may vary depending on the quality of the source video. While it can significantly enhance most videos, the best results are typically achieved with high-quality source material.</div>
+        </div>
+        <div class="query">
+            <h3> Is this technology suitable for real-time video enhancement or is it a post-processing solution?</h3>
+            <div class="response">Yes. Our Website offer real-time video dehazing as well as an option to upload the video to get a dehazed output.</div>
+        </div>
+        <div class="query">
+            <h3>What are the system requirements for using your video enhancement technology?</h3>
+            <div class="response">Our project is designed to be accessible and user-friendly. It can be used on most modern web browsers, and no special software installation is required. Users need a stable internet connection and a computer or mobile device to access and utilize the service.</div>
+        </div>
+        <div class="query">
+            <h3>Are there any limitations to the file formats supported by your video enhancement technology?</h3>
+            <div class="response">Our solution is designed to support a wide range of popular video file formats. While most common formats are supported, it's important to note that certain specialized or uncommon formats may not be compatible. We recommend using standard formats like MP4, AVI, and MOV for the best results.</div>
+        </div>
+    </div>
+</div>
+<div class="gap"></div>
+
+
+<script>
+    const qry = document.getElementsByClassName('query');
+    const res = document.getElementsByClassName('response');
+
+    for (var i = 0; i < qry.length; i++) {
+        qry[i].addEventListener('click', function() {
+            for (var j = 0; j < qry.length; j++) {
+                qry[j].classList.remove('active');
+                res[j].classList.remove('active');
+            }
+            this.classList.add('active');
+            res[i].classList.add('active');
+
+        })
+    }
+</script>
+
 <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
-<!-- <script>
-$(document).ready(function(){
-    $('#video_file').on('change', function(){
-        if ($(this).val() != '') {  // If a file was selected
-            $('.submit-button').show();  // Show the submit button
-        } else {
-            $('.submit-button').hide();  // Hide the submit button
-        }
-    });
-});
-</script> -->
+
 {% endblock body %}
