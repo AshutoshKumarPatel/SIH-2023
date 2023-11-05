@@ -1,36 +1,32 @@
 #Imports
 import io
 import cv2
-import os
 import sys
 from queue import Queue
-import gc
 from keras import backend as K
-import threading
 import time
 import ffmpeg
 import numpy as np
-import matplotlib.pyplot as plt
+import multiprocessing
 
-from pathlib import Path
 from PIL import Image
-from keras.utils import load_img, img_to_array
 from keras.models import load_model
 from keras.optimizers import Adam
 from tqdm import tqdm
 
 class LWAED:
-    def __init__(self, idle_time=300) -> None:
+    def __init__(self, idle_time=30) -> None:
         self.light_model_path = 'models/LCA_640.360_76k_white_dataset.h5'
         self.dark_model_path = 'models/LWAED_640.360_78k_v0_black_dataset_finetuned.h5'
 
         self.light_model = None
         self.dark_model = None
 
-        self.frame_skip = 20
+        self.last_used = time.time()
+
+        self.frame_skip = 1
         self.idle_time = idle_time
         self.queue = Queue()
-        threading.Thread(target=self._manage_model).start()
         self.image_size = (640, 360)
         self._load_model()
 
@@ -47,29 +43,6 @@ class LWAED:
         print('loaded dark model')
 
         return self.light_model, self.dark_model
-    
-    def _manage_model(self):
-        while True:
-            if not self.queue.empty():
-                task = self.queue.get()
-                if self.light_model is None or self.dark_model is None:
-                    self._load_model()
-                input_file, output_file = task['data']
-                result = self.process_video(input_file, output_file)
-                task['callback']
-                self.last_used = time.time()
-            elif self.light_model is not None and time.time() - self.last_used > self.idle_time:
-                K.clear_session()
-                del self.light_model
-                del self.dark_model
-                gc.collect()
-                self.light_model = None
-                self.dark_model = None
-            time.sleep(1)
-
-    def add_task(self, data, callback):
-        self.queue.put({'data': data, 'callback': callback})
-
 
     def analyze_image(self, image):
         white_threshold = np.array([101, 101, 101])
@@ -77,7 +50,6 @@ class LWAED:
         
         white_pixels = np.sum(np.all(image > white_threshold, axis=-1))
         black_pixels = np.sum(np.all(image < black_threshold, axis=-1))
-        # print(white_pixels, black_pixels)
         
         if white_pixels > black_pixels:
             return 1
@@ -133,13 +105,12 @@ class LWAED:
 
         cap.release()
 
-        stream = ffmpeg.input('pipe:', format='rawvideo', pix_fmt='rgb24', s='{}x{}'.format(*self.image_size))
+        stream = ffmpeg.input('pipe:', format='rawvideo', pix_fmt='bgr24', s='{}x{}'.format(*self.image_size))
         stream = ffmpeg.output(stream, output_file, pix_fmt='yuv420p', vcodec='libx264', r=fps)
         try:
             stream = ffmpeg.run(stream, input=np.array(frames).tobytes(), capture_stdout=True, capture_stderr=True)
         except ffmpeg.Error as e:
             print(e.stderr.decode(), file=sys.stderr)
-            # raise e
 
 
     def realtime_process(self, bytes_data):
@@ -155,15 +126,18 @@ class LWAED:
         predicted_frame = Image.fromarray(predicted_frame)
 
         return predicted_frame
+    
 
-
-if __name__=='__main__':
-    input_file = 'uploads/sample1.mp4'
-    output_file = 'uploads/sample5.mp4'
-
+def worker(task_queue):
     L = LWAED()
-    L.add_task((input_file, output_file), 'success')
+    while True:
+        try:
+            input_file, output_file = task_queue.get(timeout=20)
+            print(f"Received task: {input_file}, {output_file}")
+            print(f"Processing task: {input_file}, {output_file}")
+            L.process_video(input_file, output_file)
+            print(f"Finished task: {input_file}, {output_file}")
 
-    # L.process_video('uploads/sample1.mp4', 'uploads/sample6.mp4')
-    # L.realtime_process(byte_data)
-    # result.show()
+        except multiprocessing.queues.Empty:
+            print("No tasks received for 10 minutes, terminating...")
+            break

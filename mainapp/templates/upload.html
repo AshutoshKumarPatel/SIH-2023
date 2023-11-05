@@ -34,27 +34,21 @@
         </div>
     </form>
     <span class="divider"></span>
-    <div class="sample-videos">
-        {% for file_path in file_paths %}
-            <div class="video">
-                <form action="{% url 'upload_sample' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="text" name="video_file" id="sample_video" value="{{ file_path }}" readonly>
-                    <button class="img-submit" type="submit">
-                        <img src="https://source.unsplash.com/random/256x256">
-                    </button>
-                </form>
-            </div>
-        {% endfor %}
-        <!-- <div class="video">
-            <a href=""><img src="https://source.unsplash.com/random/256x256"></a>
+    <div class="sample-videos-container">
+        <span>Or Try it out with sample files!</span>
+        <div class="sample-videos">
+            {% for file_path, thumbnail_path in paired_paths %}
+                <div class="video">
+                    <form action="{% url 'upload_sample' %}" method="POST"x>
+                        {% csrf_token %}
+                        <input type="text" name="video_file" id="sample_video" value="{{ file_path }}" readonly>
+                        <button class="img-submit" type="submit">
+                            <img src="{% static 'thumbnails/' %}{{ thumbnail_path }}">
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
         </div>
-        <div class="video">
-            <a href=""><img src="https://source.unsplash.com/random/256x256"></a>
-        </div>
-        <div class="video">
-            <a href=""><img src="https://source.unsplash.com/random/256x256"></a>
-        </div> -->
     </div>
 </div>
 <script>

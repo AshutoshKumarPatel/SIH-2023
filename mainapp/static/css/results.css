@@ -1,0 +1,39 @@
+.btn {
+    gap: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    background-color: black;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-family: Poppins;
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
+    font-weight: 500;
+}
+
+.btn svg {
+    height: 100%;
+}
+
+.control-wrapper {
+    padding: 0px 1rem;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.video-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 5rem;
+    margin-top: 4rem;
+    padding: 1rem;
+}
+
+video {
+    width: 100%;
+}

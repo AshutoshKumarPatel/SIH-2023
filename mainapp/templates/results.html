@@ -2,22 +2,9 @@
 {% load static %}
 
 {% block head %}
-<link rel='stylesheet' href="{% static 'css/index.css' %}">
+<link rel='stylesheet' href="{% static 'css/results.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<style>
-    .video-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 5rem;
-        margin-top: 4rem;
-        padding: 1rem;
-    }
-
-    video {
-        width: 100%;
-    }
-</style>
 {% endblock head %}
 
 {% block title %} HazeBusters {% endblock title %}
@@ -26,33 +13,73 @@
 {% block body %}
 
 <div class="video-container">
-    <video id="video1" controls>
-        <source src="{{ input_file_path }}" type="video/mp4">
+    <video id="video1">
+        <source src="{{ input_file_path }}" type="video/mp4" >
     </video>
-    <video id="video2" controls>
+    <video id="video2">
         <source src="{{ output_file_path }}" type="video/mp4">
     </video>
 </div>
 
+<div class="control-wrapper">
+    <button class="btn" id="playPauseBtn">Play/Pause</button>
+    <a href="{{ output_file_path }}" class="btn" download>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Download"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path> </g> </g></svg>
+        <p>Download</p>
+    </a>
+</div>
+<!-- <input id="slider" type="range" min="0" max="100" value="0"> -->
+
 <script>
     const video1 = document.getElementById('video1');
     const video2 = document.getElementById('video2');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const mvMiddle = document.getElementById('mvMiddle');
+    const slider = document.getElementById('slider');
 
-    // Add event listener to synchronize video playback
-    video1.addEventListener('play', () => {
-        video2.play();
+    let isUserDraggingSlider = false;
+
+    // Update the slider max value when the video metadata is loaded
+    video1.addEventListener('loadedmetadata', () => {
+        slider.max = video1.duration;
     });
 
-    video1.addEventListener('pause', () => {
-        video2.pause();
+    // Synchronize video playback
+    playPauseBtn.addEventListener('click', () => {
+        if (video1.paused) {
+            video1.play();
+            video2.play();
+            playPauseBtn.textContent = 'Pause';
+        } else {
+            video1.pause();
+            video2.pause();
+            playPauseBtn.textContent = 'Play';
+        }
     });
 
-    video2.addEventListener('play', () => {
-        video1.play();
+    // Update the current time of the videos when the slider value changes
+    slider.addEventListener('mousedown', () => {
+        isUserDraggingSlider = true;
     });
 
-    video2.addEventListener('pause', () => {
-        video1.pause();
+    slider.addEventListener('mouseup', () => {
+        isUserDraggingSlider = false;
+    });
+
+    slider.addEventListener('input', () => {
+        if (isUserDraggingSlider) {
+            video1.currentTime = slider.value;
+            video2.currentTime = slider.value;
+        }
+    });
+
+    // Update the slider value as the videos progress
+    video1.addEventListener('timeupdate', () => {
+        if (!isUserDraggingSlider) {
+            slider.value = video1.currentTime;
+        }
     });
 </script>
+
+
 {% endblock body %}
