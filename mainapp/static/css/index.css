@@ -12,15 +12,34 @@ html {
     padding: 0px 5rem;
 }
 
+.hero-heading {
+    display: grid;
+    gap: 2rem;
+    flex: 1;
+}
+
 .heading {
     font-family: Poppins;
     font-size: calc(8px + 3vw);
-    line-height: 5rem;
 }
 
 .description {
     font-family: Poppins;
     font-size: calc(8px + 0.85vw);
+    font-weight: 400;
+}
+
+.comparison-wrapper {
+    width: 40rem;
+    height: inherit;
+    flex: 1.5;
+    display: grid;
+    place-items: center;
+}
+
+img-comparison-slider {
+    width: 100%;
+    height: 100%;
 }
 
 .btn {
@@ -104,9 +123,8 @@ lord-icon {
 
 .stats-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 5rem;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 2rem;
 }
 
 .stats-container a,
@@ -115,13 +133,8 @@ lord-icon {
 }
 
 .stats-card {
-    /* background: linear-gradient(120deg, rgb(12 11 14) 0%, #333333 100%); */
-    /* background-color: #181818; */
     border-radius: 0.75rem;
-    /* color: white; */
-    /* color: black; */
     padding: 1rem;
-    /* box-shadow: 0px 0px 10px #757575; */
     box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
@@ -187,11 +200,11 @@ lord-icon {
     0% {
         margin-top: 0;
     }
-
+    
     50% {
         margin-top: 100px;
     }
-
+    
     100% {
         margin-top: 0;
     }
@@ -253,4 +266,29 @@ lord-icon {
     padding-top: 1rem;
     max-height: 10rem;
     transition: all 0.5s ease-in;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column;
+        padding: 0px 1rem;
+    }
+    
+    .hero-heading{
+        margin-top: 5rem;
+        place-items: center;
+    }
+
+    .heading, .description {
+        text-align: center;
+    }
+
+    .text-window {
+        margin-left: 0px;
+        margin-top: 1rem;
+    }
+
+    .comparison-wrapper {
+        display: none;
+    }
 }

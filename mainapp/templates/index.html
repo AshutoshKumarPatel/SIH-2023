@@ -12,22 +12,20 @@
 {% block body %}
 <div class="hero-section">
     <div class="hero-heading">
-        <span class="heading">
-            Enhance Your 
+        <div class="text-wrapper">
+            <h2 class="heading">
+                Enhance Your Videos with
+            </h2>
             <br>
-            Videos with
-        </span>
-        <br>
-        <br>
-        <span class="description">
-            Advanced technology for Crystal Clear Results
-        </span>
-        <br><br><br><br>
+            <h4 class="description">
+                Advanced technology for Crystal Clear Results
+            </h4>
+        </div>
         <a href="{% url 'dehaze' %}" class="btn">
             Get Started
         </a>
     </div>
-    <div>
+    <div class="comparison-wrapper">
         <img-comparison-slider>
             <figure slot="first" class="before">
                 <img slot="first" src="{% static 'images/haze_image.jpg' %}" />
