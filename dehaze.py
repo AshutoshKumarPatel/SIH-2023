@@ -128,16 +128,33 @@ class LWAED:
         return predicted_frame
     
 
-def worker(task_queue):
+def VideoWorker(task_queue):
     L = LWAED()
     while True:
         try:
-            input_file, output_file = task_queue.get(timeout=20)
+            input_file, output_file = task_queue.get(timeout=60)
             print(f"Received task: {input_file}, {output_file}")
             print(f"Processing task: {input_file}, {output_file}")
             L.process_video(input_file, output_file)
             print(f"Finished task: {input_file}, {output_file}")
+            task_queue.task_done()
 
         except multiprocessing.queues.Empty:
-            print("No tasks received for 10 minutes, terminating...")
+            print("No tasks received for 1 minute(s), terminating...")
+            break
+
+def RealtimeWorker(task_queue, return_dict):
+    L = LWAED()
+    while True:
+        try:
+            bytes_data = task_queue.get(timeout=60)
+            processed_frame = L.realtime_process(bytes_data)
+            try:
+                return_dict['result'] = processed_frame
+            except BrokenPipeError:
+                print("Manager has been closed, terminating...")
+                break
+
+        except multiprocessing.queues.Empty:
+            print("No tasks received for 1 minute(s), terminating...")
             break
