@@ -2,8 +2,6 @@
 import io
 import cv2
 import sys
-from queue import Queue
-from keras import backend as K
 import time
 import ffmpeg
 import numpy as np
@@ -13,9 +11,10 @@ from PIL import Image
 from keras.models import load_model
 from keras.optimizers import Adam
 from tqdm import tqdm
+from pathlib import Path
 
 class LWAED:
-    def __init__(self, idle_time=30) -> None:
+    def __init__(self) -> None:
         self.light_model_path = 'models/LCA_640.360_76k_white_dataset.h5'
         self.dark_model_path = 'models/LWAED_640.360_78k_v0_black_dataset_finetuned.h5'
 
@@ -25,8 +24,6 @@ class LWAED:
         self.last_used = time.time()
 
         self.frame_skip = 1
-        self.idle_time = idle_time
-        self.queue = Queue()
         self.image_size = (640, 360)
         self._load_model()
 
@@ -158,3 +155,5 @@ def RealtimeWorker(task_queue, return_dict):
         except multiprocessing.queues.Empty:
             print("No tasks received for 1 minute(s), terminating...")
             break
+
+Path('uploads').mkdir(parents=True, exist_ok=True)
