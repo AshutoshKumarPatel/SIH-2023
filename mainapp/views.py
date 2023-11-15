@@ -11,12 +11,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from urllib.parse import urlencode
-from dehaze import LWAED, worker
+from dehaze import VideoWorker
 import multiprocessing
 
 THUMBNAIL_FILES_PATH = os.listdir(os.path.join(settings.STATIC_ROOT, 'thumbnails'))
 SAMPLE_FILES_PATH = os.listdir(os.path.join(settings.STATIC_ROOT, 'sample_videos'))
-TASK_QUEUE = multiprocessing.Queue()
+TASK_QUEUE = multiprocessing.JoinableQueue()
 PROCESS = None
 
 # Create your views here.
@@ -28,8 +28,8 @@ def dehaze(request):
 
 def upload(request):
     if request.method == "POST":
+        global PROCESS
         video_file = request.FILES['video_file']
-        print(video_file)
         if video_file:
             input_file = default_storage.save(video_file.name, video_file)
             output_file = f"dehaze_{input_file}"
@@ -40,9 +40,10 @@ def upload(request):
             output_file = os.path.join(settings.MEDIA_ROOT, output_file)
 
             if PROCESS is None or not PROCESS.is_alive():
-                p = multiprocessing.Process(target=worker, args=(TASK_QUEUE,))
-                p.start()
+                PROCESS = multiprocessing.Process(target=VideoWorker, args=(TASK_QUEUE,))
+                PROCESS.start()
             TASK_QUEUE.put((input_file, output_file))
+            TASK_QUEUE.join()
 
             file_paths = {'input_file_path': input_file_path, 'output_file_path': output_file_path}
 
@@ -51,11 +52,11 @@ def upload(request):
             return redirect(url)
 
     paired_paths = [[SAMPLE_FILES_PATH[i], THUMBNAIL_FILES_PATH[i]] for i in range(len(SAMPLE_FILES_PATH))] 
-    print(paired_paths)
     return render(request, 'upload.html', {'paired_paths': paired_paths})
 
 def upload_sample(request):
     if request.method == 'POST':
+        global PROCESS
         video_file = request.POST['video_file']
         if video_file:
             output_file = f"dehaze_{video_file}"
@@ -65,11 +66,12 @@ def upload_sample(request):
             input_file = os.path.join(settings.STATIC_ROOT, 'sample_videos', video_file)
             output_file = os.path.join(settings.MEDIA_ROOT, output_file)
 
-            if PROCESS is None or not PROCESS.is_alive():
-                p = multiprocessing.Process(target=worker, args=(TASK_QUEUE,))
-                p.start()
-            TASK_QUEUE.put((input_file, output_file))
-            # p.join()
+            if not os.path.isfile(output_file):
+                if PROCESS is None or not PROCESS.is_alive():
+                    PROCESS = multiprocessing.Process(target=VideoWorker, args=(TASK_QUEUE,))
+                    PROCESS.start()
+                TASK_QUEUE.put((input_file, output_file))
+                TASK_QUEUE.join()
 
             file_paths = {'input_file_path': input_file_path, 'output_file_path': output_file_path}
 
